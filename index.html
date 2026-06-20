@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Startup CRM Lite</title>
+    <!-- Prevent FOUC (Flash of Unstyled Content) by checking theme before React mounts -->
+    <script>
+      (function() {
+        try {
+          var storedTheme = localStorage.getItem('startup-crm-theme');
+          var isDark = storedTheme === 'true' || (storedTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="antialiased text-slate-800 dark:text-white bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
