@@ -1,13 +1,25 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+const formatCurrency = (amount) => {
+  if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
+  if (amount >= 1000) return `₹${(amount / 1000).toFixed(1)}k`;
+  return `₹${amount}`;
+};
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
+    const value = new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0,
+    }).format(payload[0].value);
+    
     return (
       <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-lg">
-        <p className="font-semibold text-slate-800 dark:text-white">{label}</p>
-        <p className="text-sm text-slate-600 dark:text-slate-300">
-          Conversion: <span className="font-bold text-green-600 dark:text-green-400">{payload[0].value}%</span>
+        <p className="font-semibold text-slate-800 dark:text-white">{label} Revenue</p>
+        <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+          {value}
         </p>
       </div>
     );
@@ -15,22 +27,28 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const LineChartCard = ({ data }) => {
+const RevenueChartCard = ({ data }) => {
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm h-full flex flex-col">
-      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Monthly Conversion Trend</h3>
+      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Revenue Analytics</h3>
       
-      {data.length === 0 ? (
+      {data.length === 0 || data.every(d => d.revenue === 0) ? (
         <div className="flex-1 flex items-center justify-center text-slate-500 dark:text-slate-400 text-sm">
-          No data available for this period
+          No won revenue for this period
         </div>
       ) : (
         <div className="flex-1 min-h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart
+            <AreaChart
               data={data}
               margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
             >
+              <defs>
+                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#22C55E" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
               <XAxis 
                 dataKey="name" 
@@ -43,20 +61,19 @@ const LineChartCard = ({ data }) => {
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: '#64748B', fontSize: 12 }}
-                domain={[0, 100]}
-                tickFormatter={(value) => `${value}%`}
+                tickFormatter={formatCurrency}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Line 
+              <Area 
                 type="monotone" 
-                dataKey="rate" 
+                dataKey="revenue" 
                 stroke="#22C55E" 
                 strokeWidth={3}
-                dot={{ r: 4, fill: '#22C55E', strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 6 }}
+                fillOpacity={1} 
+                fill="url(#colorRevenue)" 
                 animationDuration={1500}
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       )}
@@ -64,4 +81,4 @@ const LineChartCard = ({ data }) => {
   );
 };
 
-export default LineChartCard;
+export default RevenueChartCard;

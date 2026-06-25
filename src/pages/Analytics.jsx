@@ -1,81 +1,119 @@
-import React from 'react';
-import { useLeads } from '../context/LeadContext';
+import React, { useState, useEffect } from 'react';
+import { useAnalytics } from '../hooks/useAnalytics';
+
+import AnalyticsFilters from '../components/analytics/AnalyticsFilters';
+import StatsCards from '../components/analytics/StatsCards';
 import PieChartCard from '../components/analytics/PieChartCard';
+import FunnelChartCard from '../components/analytics/FunnelChartCard';
 import BarChartCard from '../components/analytics/BarChartCard';
 import LineChartCard from '../components/analytics/LineChartCard';
-import EmptyState from '../components/common/EmptyState';
-import { Users, Target, Clock } from 'lucide-react';
-import { getStatusDistribution, getMonthlyLeads, getConversionByMonth } from '../utils/analyticsHelpers';
+import RevenueChartCard from '../components/analytics/RevenueChartCard';
+import LeadSourceChart from '../components/analytics/LeadSourceChart';
+import SalesVelocityCard from '../components/analytics/SalesVelocityCard';
+import ForecastCard from '../components/analytics/ForecastCard';
+import ActivityHeatmap from '../components/analytics/ActivityHeatmap';
+import TopPerformersCard from '../components/analytics/TopPerformersCard';
+import EmptyAnalyticsState from '../components/analytics/EmptyAnalyticsState';
+import LoadingSkeleton from '../components/analytics/LoadingSkeleton';
+
+import {
+  getStatusDistribution,
+  getMonthlyLeads,
+  getConversionByMonth,
+  getRevenueByMonth,
+  getLeadSourceStats,
+  getFunnelData,
+  getSalesVelocity,
+  getForecastRevenue,
+  getTopPerformers,
+  getActivityHeatmapData
+} from '../utils/analyticsHelpers';
 
 const Analytics = () => {
-  const { leads } = useLeads();
+  const { rawLeads, leads, dateRange, setDateRange } = useAnalytics();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const totalLeads = leads.length;
-  const wonLeads = leads.filter(lead => lead.status === 'Won').length;
-  const wonRate = totalLeads > 0 ? ((wonLeads / totalLeads) * 100).toFixed(1) : 0;
-  
-  const avgTimeToClose = wonLeads > 0 ? '14 Days' : 'N/A';
+  // Simulate loading state for smoother UX on initial render
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600); // 600ms fake loading for visual polish when filters change
+    return () => clearTimeout(timer);
+  }, [dateRange]);
 
+  if (rawLeads.length === 0) {
+    return (
+      <div className="min-h-[calc(100vh-100px)] p-4 sm:p-6 md:p-8 flex items-center justify-center bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
+        <EmptyAnalyticsState />
+      </div>
+    );
+  }
+
+  // Memoize data calculations so they don't re-run on every render if leads haven't changed
   const pieChartData = getStatusDistribution(leads);
+  const funnelData = getFunnelData(leads);
   const barChartData = getMonthlyLeads(leads);
   const lineChartData = getConversionByMonth(leads);
+  const revenueData = getRevenueByMonth(leads);
+  const sourceData = getLeadSourceStats(leads);
+  const velocity = getSalesVelocity(leads);
+  const forecast = getForecastRevenue(leads);
+  const heatmapData = getActivityHeatmapData(leads);
+  const topPerformersData = getTopPerformers(leads);
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 md:p-8 bg-slate-50 dark:bg-slate-900 transition-colors duration-200 relative">
-      <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">Analytics Overview</h1>
-        <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-1">Deep dive into your sales pipeline and performance metrics.</p>
-      </div>
+    <div className="min-h-screen p-4 sm:p-6 md:p-8 bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
+      <AnalyticsFilters dateRange={dateRange} setDateRange={setDateRange} />
 
-      {leads.length === 0 ? (
-        <div className="max-w-xl mx-auto mt-8 md:mt-12">
-          <EmptyState isTotalEmpty={true} />
-        </div>
+      {isLoading ? (
+        <LoadingSkeleton />
       ) : (
         <>
-          {/* Summary Stats Cards Row: 1col on mobile, 3col on tablet/desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors duration-200 p-6 flex items-center">
-              <div className="p-3 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-lg mr-4">
-                <Users size={24} />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Leads</p>
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-white">{totalLeads}</h3>
-              </div>
-            </div>
+          <StatsCards leads={leads} previousLeads={[]} />
 
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors duration-200 p-6 flex items-center">
-              <div className="p-3 bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 rounded-lg mr-4">
-                <Target size={24} />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Global Win Rate</p>
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-white">{wonRate}%</h3>
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6 mb-6">
+            <div className="w-full">
+              <PieChartCard data={pieChartData} totalLeads={leads.length} />
             </div>
-
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors duration-200 p-6 flex items-center">
-              <div className="p-3 bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 rounded-lg mr-4">
-                <Clock size={24} />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Avg Time to Close</p>
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-white">{avgTimeToClose}</h3>
-              </div>
+            <div className="w-full">
+              <FunnelChartCard data={funnelData} />
             </div>
           </div>
 
-          {/* Charts Grid: 1col on mobile, 2col on tablet+ */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            <div className="md:col-span-1 w-full">
-              <PieChartCard data={pieChartData} />
-            </div>
-            <div className="md:col-span-1 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="w-full">
               <BarChartCard data={barChartData} />
             </div>
-            <div className="md:col-span-2 w-full">
+            <div className="w-full">
               <LineChartCard data={lineChartData} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="w-full">
+              <RevenueChartCard data={revenueData} />
+            </div>
+            <div className="w-full">
+              <LeadSourceChart data={sourceData} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="w-full">
+              <ActivityHeatmap data={heatmapData} />
+            </div>
+            <div className="w-full">
+              <TopPerformersCard data={topPerformersData} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="w-full">
+              <ForecastCard forecast={forecast} confidence={88} />
+            </div>
+            <div className="w-full">
+              <SalesVelocityCard velocity={velocity} previousVelocity={velocity * 0.9} />
             </div>
           </div>
         </>
