@@ -34,7 +34,7 @@ const getSystemThemePreference = () => {
 export const ThemeProvider = ({ children }) => {
   // Use custom hook to handle state and localStorage sync seamlessly.
   // Defaults to system preference if no user preference is stored.
-  const [isDarkMode, setIsDarkMode] = useLocalStorage('startup-crm-theme', getSystemThemePreference());
+  const [isDarkMode, setIsDarkMode] = useLocalStorage('startup-crm-theme', false);
 
   // Apply or remove the 'dark' tailwind class on the root html element whenever state changes
   useEffect(() => {

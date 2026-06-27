@@ -23,7 +23,7 @@ const AppRoutes = () => {
         // A simple loading spinner/message centered on the screen
         <div className="flex-1 flex items-center justify-center min-h-screen">
           {/* Loading text with a basic pulse animation from Tailwind CSS */}
-          <div className="text-xl font-semibold text-gray-500 animate-pulse">Loading...</div>
+          <div className="text-xl font-semibold text-gray-500 dark:text-gray-400 animate-pulse">Loading...</div>
         {/* Close loading container */}
         </div>
       }

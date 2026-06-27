@@ -10,7 +10,7 @@
       (function() {
         try {
           var storedTheme = localStorage.getItem('startup-crm-theme');
-          var isDark = storedTheme === 'true' || (storedTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var isDark = storedTheme === 'true';
           if (isDark) {
             document.documentElement.classList.add('dark');
           }

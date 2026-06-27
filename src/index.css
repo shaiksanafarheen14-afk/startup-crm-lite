@@ -2,6 +2,9 @@
 
 @import "tailwindcss"; 
 
+/* Override the dark variant to use the .dark selector */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme{
   --font-poppins:"Poppins",sans-serif;
   --color-primary:#2563EB ;

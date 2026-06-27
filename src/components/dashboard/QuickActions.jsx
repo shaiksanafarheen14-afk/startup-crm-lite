@@ -10,11 +10,11 @@ const QuickActions = () => {
           <UserPlus size={18} className="mr-3" />
           Add New Lead
         </button>
-        <button className="flex items-center w-full px-4 py-3 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors font-medium">
+        <button className="flex items-center w-full px-4 py-3 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors font-medium">
           <List size={18} className="mr-3 text-slate-500 dark:text-slate-400" />
           View All Leads
         </button>
-        <button className="flex items-center w-full px-4 py-3 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors font-medium">
+        <button className="flex items-center w-full px-4 py-3 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors font-medium">
           <Download size={18} className="mr-3 text-slate-500 dark:text-slate-400" />
           Export Data
         </button>

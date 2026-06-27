@@ -19,13 +19,13 @@ const SalesVelocityCard = ({ velocity, previousVelocity }) => {
   return (
     <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-md h-full flex flex-col justify-between relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+      <div className="absolute -top-10 -right-10 w-32 h-32 bg-white dark:bg-slate-800/10 rounded-full blur-2xl"></div>
       <div className="absolute bottom-0 right-10 w-24 h-24 bg-indigo-400/20 rounded-full blur-xl"></div>
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium text-indigo-100">Sales Velocity</h3>
-          <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-800/20 p-2 rounded-lg backdrop-blur-sm">
             <Zap size={20} className="text-amber-300" />
           </div>
         </div>
