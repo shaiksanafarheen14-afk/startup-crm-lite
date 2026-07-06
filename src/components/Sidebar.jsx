@@ -20,7 +20,7 @@ const Sidebar = () => {
       */}
       <div className="
         fixed bottom-0 left-0 right-0 z-50 flex flex-row items-center justify-around h-16 px-4
-        bg-slate-900 dark:bg-slate-950 text-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-colors duration-200 border-t border-slate-800
+        bg-white dark:bg-slate-900 text-slate-800 dark:text-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-colors duration-200 border-t border-slate-200 dark:border-slate-800
         
         md:static md:flex-col md:h-screen md:w-24 md:p-4 md:border-t-0 md:border-r md:shadow-xl md:justify-start
         lg:w-64 lg:p-6
@@ -44,7 +44,7 @@ const Sidebar = () => {
                 `flex flex-col lg:flex-row items-center justify-center lg:justify-start px-2 py-2 md:py-3 lg:px-4 rounded-xl font-medium transition-all duration-200 min-h-[44px] min-w-[44px] ${
                   isActive 
                     ? 'bg-blue-600 text-white shadow-md' 
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
                 }`
               }
             >
@@ -58,8 +58,8 @@ const Sidebar = () => {
         </nav>
 
         {/* Footer Area with Dark Mode Toggle - Hidden on mobile (moved to Top Header) */}
-        <div className="hidden md:flex mt-auto pt-6 border-t border-slate-800 w-full flex-col lg:flex-row items-center justify-center lg:justify-between gap-3">
-          <span className="hidden lg:inline text-sm font-medium text-slate-400">Theme</span>
+        <div className="hidden md:flex mt-auto pt-6 border-t border-slate-200 dark:border-slate-800 w-full flex-col lg:flex-row items-center justify-center lg:justify-between gap-3">
+          <span className="hidden lg:inline text-sm font-medium text-slate-600 dark:text-slate-400">Theme</span>
           <DarkModeToggle />
         </div>
       </div>
