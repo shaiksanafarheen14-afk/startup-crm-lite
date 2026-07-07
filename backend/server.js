@@ -24,7 +24,7 @@ dotenv.config();
  * Checks if required environment variables exist before starting.
  */
 const checkRequiredEnvVars = () => {
-  const required = ['MONGODB_URI', 'JWT_SECRET', 'PORT'];
+  const required = ['MONGODB_URI', 'JWT_SECRET'];
   const missing = required.filter(envVar => !process.env[envVar]);
   
   if (missing.length > 0) {
@@ -55,19 +55,40 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev')); // concise, colorized dev logging
 }
 
-// Update CORS for production
-const allowedOrigins = [process.env.FRONTEND_URL, 'https://your-app.vercel.app'];
-app.use(cors({
+// CORS Configuration
+// Allows localhost (any port), *.railway.app, *.vercel.app, *.netlify.app, and FRONTEND_URL
+const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl) or if origin is in the allowed list
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    // Allow requests with no origin (curl, Postman, mobile apps)
+    if (!origin) return callback(null, true);
+
+    // Allow localhost on any port
+    if (/^https?:\/\/localhost(:\d+)?$/.test(origin)) return callback(null, true);
+
+    // Allow Railway deployments
+    if (origin.endsWith('.railway.app') || origin.endsWith('.up.railway.app')) return callback(null, true);
+
+    // Allow Vercel deployments
+    if (origin.endsWith('.vercel.app')) return callback(null, true);
+
+    // Allow Netlify deployments
+    if (origin.endsWith('.netlify.app')) return callback(null, true);
+
+    // Allow explicit FRONTEND_URL env variable
+    if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) return callback(null, true);
+
+    console.warn(`CORS blocked: ${origin}`);
+    callback(new Error('Not allowed by CORS'));
   },
-  credentials: true
-}));
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+};
+
+app.use(cors(corsOptions));
+// Handle OPTIONS preflight requests for all routes (Express 5 compatible syntax)
+app.options('/{*path}', cors(corsOptions));
+
 
 /**
  * Rate Limiting
@@ -76,14 +97,18 @@ app.use(cors({
 const generalLimiter = rateLimit({ 
   windowMs: 15 * 60 * 1000, 
   max: 100, 
-  message: 'Too many requests, please try again later.' 
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { status: 429, message: 'Too many requests, please try again later.' }
 });
 
-// Auth rate limiter (stricter): 10 requests per 15 minutes per IP
+// Auth rate limiter: 50 requests per 15 minutes per IP
 const authLimiter = rateLimit({ 
   windowMs: 15 * 60 * 1000, 
-  max: 10, 
-  message: 'Too many auth attempts.' 
+  max: 50, 
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { status: 429, message: 'Too many auth attempts, please try again later.' }
 });
 
 // Apply rate limiters
@@ -114,6 +139,8 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
     timestamp: new Date(),
+    environment: process.env.NODE_ENV || 'development',
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
   });
 });
 
@@ -151,9 +178,14 @@ checkRequiredEnvVars();
 // Connect to Database, then start server
 let server;
 connectDB().then(() => {
-  server = app.listen(PORT, () => {
+  // Bind to 0.0.0.0 so Railway/Docker containers can receive external traffic
+  server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT} in ${MODE} mode`);
+    console.log(`Health check available at: /api/health`);
   });
+}).catch((err) => {
+  console.error('Failed to connect to MongoDB. Server will not start:', err.message);
+  process.exit(1);
 });
 
 /**
