@@ -1,10 +1,9 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
-// Helper function to generate JWT
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+    expiresIn: process.env.JWT_EXPIRES_IN || '7d'
   });
 };
 
@@ -25,7 +24,6 @@ export const register = async (req, res, next) => {
 
     const token = generateToken(user._id);
 
-    // User model's toJSON method automatically removes the password
     res.status(201).json({
       success: true,
       token,
@@ -40,28 +38,28 @@ export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // TODO: Add express-rate-limit to this route in production to prevent brute force attacks
-
     const user = await User.findOne({ email }).select('+password');
-    
-    if (!user || !(await user.comparePassword(password))) {
+
+    if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    if (!user.isActive) {
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+
+    if (user.isActive === false) {
       return res.status(403).json({ success: false, message: 'Account is deactivated' });
     }
 
     const token = generateToken(user._id);
 
-    // Remove password before sending response
-    const userResponse = user.toObject();
-    delete userResponse.password;
-
+    // Mongoose toJSON handles password removal automatically
     res.status(200).json({
       success: true,
       token,
-      user: userResponse
+      user
     });
   } catch (error) {
     next(error);
@@ -81,35 +79,35 @@ export const getProfile = async (req, res, next) => {
 
 export const updateProfile = async (req, res, next) => {
   try {
-    const { name, password, oldPassword } = req.body;
-    
+    const { name, oldPassword, newPassword } = req.body;
+
     const user = await User.findById(req.user._id).select('+password');
+    if (!user) {
+        return res.status(401).json({ success: false, message: 'User not found' });
+    }
 
     if (name) {
       user.name = name;
     }
 
-    if (password) {
+    if (newPassword) {
       if (!oldPassword) {
-         return res.status(400).json({ success: false, message: 'Please provide old password to set a new password' });
+        return res.status(400).json({ success: false, message: 'Please provide old password to set a new one' });
       }
       
       const isMatch = await user.comparePassword(oldPassword);
       if (!isMatch) {
-         return res.status(401).json({ success: false, message: 'Old password is incorrect' });
+        return res.status(400).json({ success: false, message: 'Invalid old password' });
       }
       
-      user.password = password; // pre-save hook handles hashing
+      user.password = newPassword;
     }
 
-    await user.save();
-
-    const updatedUser = user.toObject();
-    delete updatedUser.password;
+    await user.save(); 
 
     res.status(200).json({
       success: true,
-      user: updatedUser
+      user
     });
   } catch (error) {
     next(error);

@@ -1,114 +1,109 @@
 import Lead from '../models/Lead.js';
 
 /**
- * Get all leads with pagination, filtering, and search.
- * Inputs: req.query (page, limit, sortBy, sortOrder, status, search, source, dateFrom, dateTo)
- * Outputs: Paginated list of leads { total, page, limit, pages, hasNext, hasPrev }.
- * Side effects: None.
+ * @desc    Get all leads with pagination, sorting, and filtering
+ * @route   GET /api/leads
+ * @access  Private
+ * @sideEffects Reads from database, calculates pagination info
  */
 export const getLeads = async (req, res, next) => {
   try {
-    const { 
-      page = 1, 
-      limit = 20, 
-      sortBy = 'createdAt', 
-      sortOrder = 'desc',
-      status,
-      search,
-      source,
-      dateFrom,
-      dateTo
-    } = req.query;
+    const { status, search, page = 1, limit = 20, sortBy = 'createdAt', sortOrder = 'desc', source, dateFrom, dateTo } = req.query;
 
     const filter = { owner: req.user._id };
 
     if (status && status !== 'All') {
       filter.status = status;
     }
-
+    
     if (source && source !== 'All') {
       filter.source = source;
     }
 
     if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { company: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-      ];
+      const regex = { $regex: search, $options: 'i' };
+      filter.$or = [{ name: regex }, { company: regex }, { email: regex }];
     }
-
+    
     if (dateFrom || dateTo) {
       filter.createdAt = {};
       if (dateFrom) filter.createdAt.$gte = new Date(dateFrom);
       if (dateTo) filter.createdAt.$lte = new Date(dateTo);
     }
 
-    const sortOptions = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
-    
-    const pageNum = parseInt(page, 10);
-    const limitNum = parseInt(limit, 10);
-    const skip = (pageNum - 1) * limitNum;
+    const sortObj = { [sortBy]: sortOrder === 'asc' ? 1 : -1 };
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const parsedLimit = parseInt(limit);
 
+    console.log(`[GET] /api/leads - User: ${req.user._id}`);
+    
     const leads = await Lead.find(filter)
-      .sort(sortOptions)
+      .sort(sortObj)
       .skip(skip)
-      .limit(limitNum);
+      .limit(parsedLimit);
 
     const total = await Lead.countDocuments(filter);
-    const pages = Math.ceil(total / limitNum);
+    const pages = Math.ceil(total / parsedLimit);
 
     res.status(200).json({
       success: true,
       data: leads,
       pagination: {
         total,
-        page: pageNum,
-        limit: limitNum,
+        page: parseInt(page),
+        limit: parsedLimit,
         pages,
-        hasNext: pageNum < pages,
-        hasPrev: pageNum > 1
-      },
+        hasNext: parseInt(page) < pages,
+        hasPrev: parseInt(page) > 1
+      }
     });
   } catch (error) {
-    console.error('Error in getLeads:', error);
     next(error);
   }
 };
 
 /**
- * Create a new lead.
- * Inputs: req.body
- * Outputs: The newly created lead.
- * Side effects: Saves a new document to the database.
+ * @desc    Create new lead
+ * @route   POST /api/leads
+ * @access  Private
+ * @sideEffects Creates a new lead in the database
  */
 export const createLead = async (req, res, next) => {
   try {
-    const leadData = {
-      ...req.body,
-      owner: req.user._id,
-    };
+    const { name, company, email, phone, status, source, notes } = req.body;
+    
+    console.log(`[POST] /api/leads - User: ${req.user._id}`);
 
-    const newLead = await Lead.create(leadData);
+    const newLead = await Lead.create({
+      name,
+      company,
+      email,
+      phone,
+      status,
+      source,
+      notes,
+      owner: req.user._id
+    });
 
     res.status(201).json({
       success: true,
-      data: newLead,
+      data: newLead
     });
   } catch (error) {
-    console.error('Error in createLead:', error);
     next(error);
   }
 };
 
 /**
- * Get a single lead by ID.
- * Inputs: req.params.id
- * Outputs: The requested lead.
- * Side effects: None.
+ * @desc    Get lead by ID
+ * @route   GET /api/leads/:id
+ * @access  Private
+ * @sideEffects None
  */
 export const getLeadById = async (req, res, next) => {
   try {
+    console.log(`[GET] /api/leads/${req.params.id} - User: ${req.user._id}`);
+    
     const lead = await Lead.findOne({ _id: req.params.id, owner: req.user._id });
 
     if (!lead) {
@@ -117,29 +112,30 @@ export const getLeadById = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: lead,
+      data: lead
     });
   } catch (error) {
-    console.error('Error in getLeadById:', error);
     next(error);
   }
 };
 
 /**
- * Update an existing lead.
- * Inputs: req.params.id, req.body
- * Outputs: The updated lead.
- * Side effects: Updates the corresponding document in the database.
+ * @desc    Update lead
+ * @route   PUT /api/leads/:id
+ * @access  Private
+ * @sideEffects Updates the specified lead fields in database
  */
 export const updateLead = async (req, res, next) => {
   try {
-    if (req.body.owner) {
-      delete req.body.owner;
-    }
+    console.log(`[PUT] /api/leads/${req.params.id} - User: ${req.user._id}`);
+
+    // prevent changing owner
+    const updateData = { ...req.body };
+    delete updateData.owner;
 
     const lead = await Lead.findOneAndUpdate(
       { _id: req.params.id, owner: req.user._id },
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 
@@ -149,24 +145,30 @@ export const updateLead = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: lead,
+      data: lead
     });
   } catch (error) {
-    console.error('Error in updateLead:', error);
     next(error);
   }
 };
 
 /**
- * Update the status of a lead.
- * Inputs: req.params.id, req.body.status
- * Outputs: The updated lead.
- * Side effects: Updates the status field of the lead in the database.
+ * @desc    Update lead status only
+ * @route   PATCH /api/leads/:id/status
+ * @access  Private
+ * @sideEffects Updates the status field of a lead
  */
 export const updateLeadStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
     
+    console.log(`[PATCH] /api/leads/${req.params.id}/status - User: ${req.user._id}`);
+
+    const validStatuses = ['New', 'Contacted', 'Meeting Scheduled', 'Proposal Sent', 'Won', 'Lost'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status value' });
+    }
+
     const lead = await Lead.findOneAndUpdate(
       { _id: req.params.id, owner: req.user._id },
       { status },
@@ -179,22 +181,23 @@ export const updateLeadStatus = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: lead,
+      data: lead
     });
   } catch (error) {
-    console.error('Error in updateLeadStatus:', error);
     next(error);
   }
 };
 
 /**
- * Delete a lead.
- * Inputs: req.params.id
- * Outputs: Success message.
- * Side effects: Removes the lead from the database.
+ * @desc    Delete lead
+ * @route   DELETE /api/leads/:id
+ * @access  Private
+ * @sideEffects Removes lead from database
  */
 export const deleteLead = async (req, res, next) => {
   try {
+    console.log(`[DELETE] /api/leads/${req.params.id} - User: ${req.user._id}`);
+
     const lead = await Lead.findOne({ _id: req.params.id, owner: req.user._id });
 
     if (!lead) {
@@ -205,88 +208,88 @@ export const deleteLead = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'Lead deleted successfully',
+      message: 'Lead deleted successfully'
     });
   } catch (error) {
-    console.error('Error in deleteLead:', error);
     next(error);
   }
 };
 
 /**
- * Get dashboard statistics for leads using aggregation.
- * Inputs: None (uses req.user._id)
- * Outputs: totalLeads, statusBreakdown, conversionRate, sourceBreakdown, thisMonthLeads, lastMonthLeads, growthRate.
- * Side effects: None.
+ * @desc    Get dashboard statistics for leads
+ * @route   GET /api/leads/stats
+ * @access  Private
+ * @sideEffects Uses MongoDB aggregation to gather high level stats
  */
 export const getLeadStats = async (req, res, next) => {
   try {
+    console.log(`[GET] /api/leads/stats - User: ${req.user._id}`);
+    
     const now = new Date();
-    const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+    const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
 
     const stats = await Lead.aggregate([
       { $match: { owner: req.user._id } },
       {
         $facet: {
-          totalCounts: [
-            { $count: "total" }
+          statusBreakdown: [
+            { $group: { _id: '$status', count: { $sum: 1 } } }
           ],
-          statusCounts: [
-            { $group: { _id: "$status", count: { $sum: 1 } } }
+          sourceBreakdown: [
+            { $group: { _id: '$source', count: { $sum: 1 } } }
           ],
-          sourceCounts: [
-            { $group: { _id: "$source", count: { $sum: 1 } } }
-          ],
-          timeCounts: [
+          monthlyLeads: [
+            {
+              $project: {
+                isThisMonth: { $gte: ['$createdAt', thisMonthStart] },
+                isLastMonth: {
+                  $and: [
+                    { $gte: ['$createdAt', lastMonthStart] },
+                    { $lte: ['$createdAt', lastMonthEnd] }
+                  ]
+                }
+              }
+            },
             {
               $group: {
                 _id: null,
-                thisMonth: {
-                  $sum: { $cond: [{ $gte: ["$createdAt", startOfThisMonth] }, 1, 0] }
-                },
-                lastMonth: {
-                  $sum: { 
-                    $cond: [
-                      { $and: [{ $gte: ["$createdAt", startOfLastMonth] }, { $lte: ["$createdAt", endOfLastMonth] }] }, 
-                      1, 0
-                    ] 
-                  }
-                }
+                thisMonthLeads: { $sum: { $cond: ['$isThisMonth', 1, 0] } },
+                lastMonthLeads: { $sum: { $cond: ['$isLastMonth', 1, 0] } }
               }
             }
+          ],
+          total: [
+            { $count: 'count' }
           ]
         }
       }
     ]);
 
     const result = stats[0];
-    const totalLeads = result.totalCounts.length > 0 ? result.totalCounts[0].total : 0;
+    const totalLeads = result.total[0] ? result.total[0].count : 0;
     
-    const statusBreakdown = result.statusCounts.reduce((acc, curr) => {
-      acc[curr._id] = curr.count;
-      return acc;
-    }, {});
+    const statusBreakdown = {};
+    let wonLeads = 0;
+    result.statusBreakdown.forEach(s => {
+      statusBreakdown[s._id] = s.count;
+      if (s._id === 'Won') wonLeads = s.count;
+    });
 
-    const sourceBreakdown = result.sourceCounts.reduce((acc, curr) => {
-      acc[curr._id] = curr.count;
-      return acc;
-    }, {});
+    const sourceBreakdown = {};
+    result.sourceBreakdown.forEach(s => {
+      sourceBreakdown[s._id] = s.count;
+    });
 
-    const wonLeads = statusBreakdown['Won'] || 0;
-    const conversionRate = totalLeads > 0 ? Number(((wonLeads / totalLeads) * 100).toFixed(1)) : 0;
+    const thisMonthLeads = result.monthlyLeads[0] ? result.monthlyLeads[0].thisMonthLeads : 0;
+    const lastMonthLeads = result.monthlyLeads[0] ? result.monthlyLeads[0].lastMonthLeads : 0;
 
-    const timeData = result.timeCounts.length > 0 ? result.timeCounts[0] : { thisMonth: 0, lastMonth: 0 };
-    const thisMonthLeads = timeData.thisMonth;
-    const lastMonthLeads = timeData.lastMonth;
+    const growthRate = lastMonthLeads === 0 
+      ? (thisMonthLeads > 0 ? 100 : 0) 
+      : ((thisMonthLeads - lastMonthLeads) / lastMonthLeads) * 100;
 
-    let growthRate = 0;
-    if (lastMonthLeads > 0) {
-      growthRate = Number((((thisMonthLeads - lastMonthLeads) / lastMonthLeads) * 100).toFixed(1));
-    } else if (thisMonthLeads > 0) {
-      growthRate = 100; 
-    }
+    const conversionRate = totalLeads > 0 ? parseFloat(((wonLeads / totalLeads) * 100).toFixed(1)) : 0;
 
     res.status(200).json({
       success: true,
@@ -298,33 +301,34 @@ export const getLeadStats = async (req, res, next) => {
         thisMonthLeads,
         lastMonthLeads,
         growthRate
-      },
+      }
     });
   } catch (error) {
-    console.error('Error in getLeadStats:', error);
     next(error);
   }
 };
 
 /**
- * Get monthly statistics for the last 6 months.
- * Inputs: None (uses req.user._id)
- * Outputs: Array of monthly stats objects { month, total, won, lost, conversionRate }.
- * Side effects: None.
+ * @desc    Get monthly lead statistics for the last 6 months
+ * @route   GET /api/leads/stats/monthly
+ * @access  Private
+ * @sideEffects Uses MongoDB aggregation pipeline for time-series data
  */
 export const getMonthlyStats = async (req, res, next) => {
   try {
+    console.log(`[GET] /api/leads/stats/monthly - User: ${req.user._id}`);
+
     const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5); 
-    sixMonthsAgo.setDate(1); 
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
+    sixMonthsAgo.setDate(1);
     sixMonthsAgo.setHours(0, 0, 0, 0);
 
-    const monthlyStats = await Lead.aggregate([
-      { 
-        $match: { 
+    const stats = await Lead.aggregate([
+      {
+        $match: {
           owner: req.user._id,
           createdAt: { $gte: sixMonthsAgo }
-        } 
+        }
       },
       {
         $group: {
@@ -333,89 +337,80 @@ export const getMonthlyStats = async (req, res, next) => {
             month: { $month: '$createdAt' }
           },
           total: { $sum: 1 },
-          won: { $sum: { $cond: [{ $eq: ['$status', 'Won'] }, 1, 0] } },
-          lost: { $sum: { $cond: [{ $eq: ['$status', 'Lost'] }, 1, 0] } }
+          won: {
+            $sum: { $cond: [{ $eq: ['$status', 'Won'] }, 1, 0] }
+          },
+          lost: {
+            $sum: { $cond: [{ $eq: ['$status', 'Lost'] }, 1, 0] }
+          }
         }
-      }
+      },
+      { $sort: { '_id.year': 1, '_id.month': 1 } }
     ]);
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const formattedStats = [];
     
-    // Generate the last 6 months list to ensure zero-data months are included chronologically
-    const last6Months = [];
-    const d = new Date();
-    d.setDate(1);
     for (let i = 5; i >= 0; i--) {
-      const pastDate = new Date(d.getFullYear(), d.getMonth() - i, 1);
-      last6Months.push({
-        year: pastDate.getFullYear(),
-        month: pastDate.getMonth() + 1, 
-        label: `${monthNames[pastDate.getMonth()]} ${pastDate.getFullYear()}`
-      });
-    }
-
-    const formattedStats = last6Months.map(m => {
-      // Find if we have data for this month
-      const stat = monthlyStats.find(s => s._id.year === m.year && s._id.month === m.month);
-      const total = stat ? stat.total : 0;
-      const won = stat ? stat.won : 0;
-      const lost = stat ? stat.lost : 0;
-      const conversionRate = total > 0 ? Number(((won / total) * 100).toFixed(1)) : 0;
+      const d = new Date();
+      d.setMonth(d.getMonth() - i);
+      const year = d.getFullYear();
+      const month = d.getMonth() + 1;
       
-      return {
-        month: m.label,
+      const found = stats.find(s => s._id.year === year && s._id.month === month);
+      
+      const total = found ? found.total : 0;
+      const won = found ? found.won : 0;
+      const lost = found ? found.lost : 0;
+      const conversionRate = total > 0 ? parseFloat(((won / total) * 100).toFixed(1)) : 0;
+
+      formattedStats.push({
+        month: `${monthNames[month - 1]} ${year}`,
         total,
         won,
         lost,
         conversionRate
-      };
-    });
+      });
+    }
 
     res.status(200).json({
       success: true,
-      data: formattedStats,
+      data: formattedStats
     });
   } catch (error) {
-    console.error('Error in getMonthlyStats:', error);
     next(error);
   }
 };
 
 /**
- * Quick search for autocomplete (debounced).
- * Inputs: req.query.q, req.query.limit
- * Outputs: Minimal lead objects matching the search.
- * Side effects: None.
+ * @desc    Search leads quickly
+ * @route   GET /api/leads/search
+ * @access  Private
+ * @param   {string} req.query.q - Search query string
+ * @param   {string} req.query.limit - Number of results to return
+ * @sideEffects Reads from database
  */
 export const searchLeads = async (req, res, next) => {
   try {
-    const { q = '', limit = 5 } = req.query;
+    const { q, limit = 5 } = req.query;
+    console.log(`[GET] /api/leads/search - User: ${req.user._id}, Query: ${q}`);
     
     if (!q) {
       return res.status(200).json({ success: true, data: [] });
     }
-
+    
+    const regex = { $regex: q, $options: 'i' };
     const filter = {
       owner: req.user._id,
-      $or: [
-        { name: { $regex: q, $options: 'i' } },
-        { company: { $regex: q, $options: 'i' } },
-        { email: { $regex: q, $options: 'i' } }
-      ]
+      $or: [{ name: regex }, { company: regex }, { email: regex }]
     };
     
-    const limitNum = Math.min(parseInt(limit, 10), 10); 
-
     const leads = await Lead.find(filter)
       .select('_id name company email status')
-      .limit(limitNum);
-
-    res.status(200).json({
-      success: true,
-      data: leads
-    });
-  } catch (error) {
-    console.error('Error in searchLeads:', error);
+      .limit(parseInt(limit));
+      
+    res.status(200).json({ success: true, data: leads });
+  } catch(error) {
     next(error);
   }
 };

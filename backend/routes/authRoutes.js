@@ -1,5 +1,5 @@
 import express from 'express';
-import { body } from 'express-validator';
+import { check } from 'express-validator';
 import { register, login, getProfile, updateProfile } from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
@@ -7,24 +7,36 @@ import { validate } from '../middleware/validate.js';
 const router = express.Router();
 
 const registerValidation = [
-  body('name').notEmpty().withMessage('Name is required').isLength({ min: 2 }).withMessage('Name must be at least 2 characters'),
-  body('email').isEmail().withMessage('Please provide a valid email'),
-  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
+  check('name', 'Name is required').notEmpty(),
+  check('email', 'Please include a valid email').isEmail(),
+  check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
 ];
 
 const loginValidation = [
-  body('email').isEmail().withMessage('Please provide a valid email'),
-  body('password').notEmpty().withMessage('Password is required')
+  check('email', 'Please include a valid email').isEmail(),
+  check('password', 'Password is required').exists()
 ];
 
-const updateProfileValidation = [
-  body('name').optional().isLength({ min: 2 }).withMessage('Name must be at least 2 characters'),
-  body('password').optional().isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
-];
-
+// @route   POST /api/auth/register
+// @desc    Register user
+// @access  Public
+// Note: In production, apply express-rate-limit middleware here to prevent brute-force attacks
 router.post('/register', validate(registerValidation), register);
+
+// @route   POST /api/auth/login
+// @desc    Authenticate user & get token
+// @access  Public
+// Note: In production, apply express-rate-limit middleware here to prevent brute-force attacks
 router.post('/login', validate(loginValidation), login);
+
+// @route   GET /api/auth/profile
+// @desc    Get user profile
+// @access  Private
 router.get('/profile', protect, getProfile);
-router.put('/profile', protect, validate(updateProfileValidation), updateProfile);
+
+// @route   PUT /api/auth/profile
+// @desc    Update user profile
+// @access  Private
+router.put('/profile', protect, updateProfile);
 
 export default router;

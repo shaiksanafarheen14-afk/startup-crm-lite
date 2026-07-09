@@ -1,54 +1,26 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-// Load environment variables
+// Load environment variables from .env file
 dotenv.config();
 
 /**
- * Connects to MongoDB Atlas using the URI from environment variables.
- * Includes retry logic with exponential backoff for Railway deployment environments.
- * @param {number} retries - Number of retry attempts (default: 3)
+ * Connects to the MongoDB Atlas database.
+ * Uses the MONGODB_URI environment variable from .env.
  */
-export const connectDB = async (retries = 3) => {
-  const mongooseOptions = {
-    // How long to wait for a server to be selected (ms)
-    serverSelectionTimeoutMS: 10000,
-    // How long to wait for a connection to be established (ms)
-    connectTimeoutMS: 10000,
-    // How long socket stays open without activity (ms)
-    socketTimeoutMS: 45000,
-    // Maximum connections in pool
-    maxPoolSize: 10,
-  };
+const connectDB = async () => {
+  try {
+    // Attempt to establish a connection to MongoDB
+    // Note: useNewUrlParser and useUnifiedTopology options are passed as per requirements,
+    // though they are no longer strictly needed in Mongoose v6+.
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
 
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      const conn = await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
-      console.log(`✅ MongoDB Atlas Connected: ${conn.connection.host}`);
-
-      // Log connection lifecycle events
-      mongoose.connection.on('disconnected', () => {
-        console.warn('⚠️  MongoDB disconnected');
-      });
-      mongoose.connection.on('reconnected', () => {
-        console.log('✅ MongoDB reconnected');
-      });
-      mongoose.connection.on('error', (err) => {
-        console.error('❌ MongoDB connection error:', err.message);
-      });
-
-      return conn;
-    } catch (error) {
-      console.error(`❌ MongoDB connection attempt ${attempt}/${retries} failed: ${error.message}`);
-
-      if (attempt === retries) {
-        throw error; // Let caller handle the final failure
-      }
-
-      // Exponential backoff: wait 2s, 4s, 8s...
-      const delay = Math.pow(2, attempt) * 1000;
-      console.log(`⏳ Retrying in ${delay / 1000}s...`);
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
+    console.log(`MongoDB Atlas Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`Error connecting to MongoDB: ${error.message}`);
+    // Exit process with failure code 1 to halt the application if DB connection fails
+    process.exit(1);
   }
 };
+
+export default connectDB;

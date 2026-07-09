@@ -32,7 +32,7 @@ const leadService = {
   },
 
   getMonthlyStats: async () => {
-    const response = await api.get('/api/leads/monthly-stats');
+    const response = await api.get('/api/leads/stats/monthly');
     return response.data;
   }
 };
