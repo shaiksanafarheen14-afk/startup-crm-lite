@@ -30,6 +30,7 @@ export const register = async (req, res, next) => {
       user
     });
   } catch (error) {
+    console.error("REGISTER ERROR:", error);
     next(error);
   }
 };
@@ -62,6 +63,7 @@ export const login = async (req, res, next) => {
       user
     });
   } catch (error) {
+    console.error("LOGIN ERROR:", error);
     next(error);
   }
 };

@@ -60,11 +60,16 @@ export const errorHandler = (err, req, res, next) => {
     errors
   };
 
-  // Append stack trace only in development mode
-  if (process.env.NODE_ENV === 'development') {
-    errorResponsePayload.stack = err.stack;
-  }
+  // Append stack trace always to debug Railway 500
+  errorResponsePayload.stack = err.stack;
+  
+  console.error("GLOBAL ERROR HANDLER CAUGHT:", err);
 
   // Send the final JSON response
-  res.status(statusCode).json(errorResponsePayload);
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || message,
+    stack: err.stack,
+    errors
+  });
 };

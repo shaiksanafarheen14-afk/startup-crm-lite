@@ -41,11 +41,20 @@ if (process.env.NODE_ENV === 'production') {
 
 // Enable Cross-Origin Resource Sharing (CORS)
 // Allows the frontend application to communicate with this API securely
-const allowedOrigins = [process.env.FRONTEND_URL, 'https://your-app.vercel.app'];
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
-    else callback(new Error('Not allowed by CORS'));
+    // Normalize origins by removing trailing slashes for safer comparison
+    const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : '';
+    const allowedOrigins = [frontendUrl, 'https://your-app.vercel.app'];
+    
+    if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ''))) {
+      callback(null, true);
+    } else {
+      console.error(`CORS BLOCKED ORIGIN: ${origin} (Expected: ${frontendUrl})`);
+      const error = new Error('Not allowed by CORS');
+      error.statusCode = 403; // <-- Minimal fix: Prevent the global error handler from defaulting this to 500
+      callback(error);
+    }
   },
   credentials: true // Allow cookies/authorization headers
 }));
