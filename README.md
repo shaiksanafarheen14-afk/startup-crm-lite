@@ -109,11 +109,11 @@ https://startup-crm-lite-production.up.railway.app
 
 ### Lead Management
 
-Coming Soon
+![Leads Management](screenshots/Leads.png)
 
 ### Analytics
 
-Coming Soon
+![Analytics Dashboard](screenshots/Analytics.png)
 
 ---
 
