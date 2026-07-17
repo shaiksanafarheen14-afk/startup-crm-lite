@@ -47,13 +47,13 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
     }
   };
 
-  const inputBaseClasses = "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none transition-shadow bg-white dark:bg-slate-900 text-slate-900 dark:text-white";
+  const inputBaseClasses = "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none transition-shadow bg-surface  text-text ";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-          Name <span className="text-red-500">*</span>
+        <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-1">
+          Name <span className="text-error">*</span>
         </label>
         <input
           type="text"
@@ -63,17 +63,17 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           onChange={handleChange}
           className={`${inputBaseClasses} ${
             errors.name 
-              ? 'border-red-500 focus:ring-red-200 dark:focus:ring-red-900/40' 
-              : 'border-slate-300 dark:border-slate-600 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500 dark:focus:border-blue-500'
+              ? 'border-red-500 focus:ring-red-200 ' 
+              : 'border-border  focus:ring-blue-200  focus:border-blue-500 '
           }`}
           placeholder="e.g. Jane Doe"
         />
-        {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
+        {errors.name && <p className="mt-1 text-sm text-error">{errors.name}</p>}
       </div>
 
       <div>
-        <label htmlFor="company" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-          Company <span className="text-red-500">*</span>
+        <label htmlFor="company" className="block text-sm font-medium text-text-secondary mb-1">
+          Company <span className="text-error">*</span>
         </label>
         <input
           type="text"
@@ -83,17 +83,17 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           onChange={handleChange}
           className={`${inputBaseClasses} ${
             errors.company 
-              ? 'border-red-500 focus:ring-red-200 dark:focus:ring-red-900/40' 
-              : 'border-slate-300 dark:border-slate-600 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500 dark:focus:border-blue-500'
+              ? 'border-red-500 focus:ring-red-200 ' 
+              : 'border-border  focus:ring-blue-200  focus:border-blue-500 '
           }`}
           placeholder="e.g. Acme Corp"
         />
-        {errors.company && <p className="mt-1 text-sm text-red-500">{errors.company}</p>}
+        {errors.company && <p className="mt-1 text-sm text-error">{errors.company}</p>}
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-          Email <span className="text-red-500">*</span>
+        <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-1">
+          Email <span className="text-error">*</span>
         </label>
         <input
           type="email"
@@ -103,16 +103,16 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           onChange={handleChange}
           className={`${inputBaseClasses} ${
             errors.email 
-              ? 'border-red-500 focus:ring-red-200 dark:focus:ring-red-900/40' 
-              : 'border-slate-300 dark:border-slate-600 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500 dark:focus:border-blue-500'
+              ? 'border-red-500 focus:ring-red-200 ' 
+              : 'border-border  focus:ring-blue-200  focus:border-blue-500 '
           }`}
           placeholder="jane@acme.com"
         />
-        {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+        {errors.email && <p className="mt-1 text-sm text-error">{errors.email}</p>}
       </div>
 
       <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+        <label htmlFor="phone" className="block text-sm font-medium text-text-secondary mb-1">
           Phone
         </label>
         <input
@@ -121,14 +121,14 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           name="phone"
           value={formData.phone}
           onChange={handleChange}
-          className={`${inputBaseClasses} border-slate-300 dark:border-slate-600 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500`}
+          className={`${inputBaseClasses} border-border  focus:ring-blue-200  focus:border-blue-500`}
           placeholder="+1 (555) 000-0000"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="status" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+          <label htmlFor="status" className="block text-sm font-medium text-text-secondary mb-1">
             Status
           </label>
           <select
@@ -136,7 +136,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className={`${inputBaseClasses} border-slate-300 dark:border-slate-600 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500`}
+            className={`${inputBaseClasses} border-border  focus:ring-blue-200  focus:border-blue-500`}
           >
             {STATUS_OPTIONS.map((status) => (
               <option key={status} value={status}>
@@ -147,7 +147,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
         </div>
 
         <div>
-          <label htmlFor="source" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+          <label htmlFor="source" className="block text-sm font-medium text-text-secondary mb-1">
             Source
           </label>
           <select
@@ -155,7 +155,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
             name="source"
             value={formData.source}
             onChange={handleChange}
-            className={`${inputBaseClasses} border-slate-300 dark:border-slate-600 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500`}
+            className={`${inputBaseClasses} border-border  focus:ring-blue-200  focus:border-blue-500`}
           >
             {SOURCE_OPTIONS.map((source) => (
               <option key={source} value={source}>
@@ -166,17 +166,17 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
         </div>
       </div>
 
-      <div className="flex justify-end space-x-3 pt-4 border-t border-slate-100 dark:border-slate-700">
+      <div className="flex justify-end space-x-3 pt-4 border-t border-border">
         <button
           type="button"
           onClick={onCancel}
-          className="px-5 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-600 transition-colors"
+          className="px-5 py-2.5 text-sm font-medium text-text-secondary bg-surface border border-border rounded-lg hover:bg-background focus:outline-none focus:ring-2 focus:ring-slate-200 transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900/50 transition-colors shadow-sm"
+          className="px-5 py-2.5 text-sm font-medium text-white bg-accent border border-transparent rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-colors shadow-sm"
         >
           {initialData ? 'Update Lead' : 'Create Lead'}
         </button>

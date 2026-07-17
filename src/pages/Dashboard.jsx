@@ -17,10 +17,10 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 md:p-8 bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
+    <div className="min-h-screen p-4 sm:p-6 md:p-8 bg-background transition-colors duration-200">
       <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">Dashboard Overview</h1>
-        <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-1">Welcome back. Here's what's happening with your leads today.</p>
+        <h1 className="text-2xl md:text-3xl font-extrabold text-text tracking-tight">Dashboard Overview</h1>
+        <p className="text-sm md:text-base text-text-secondary mt-1">Welcome back. Here's what's happening with your leads today.</p>
       </div>
 
       {/* Stats Cards Grid: 1 col on mobile, 2 on tablet, 4 on desktop */}

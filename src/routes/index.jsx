@@ -15,7 +15,7 @@ const ProtectedRoute = () => {
   if (isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center min-h-screen">
-        <div className="text-xl font-semibold text-gray-500 dark:text-gray-400 animate-pulse">Checking authentication...</div>
+        <div className="text-xl font-semibold text-text-secondary animate-pulse">Checking authentication...</div>
       </div>
     );
   }
@@ -32,7 +32,7 @@ const AppRoutes = () => {
     <Suspense 
       fallback={
         <div className="flex-1 flex items-center justify-center min-h-screen">
-          <div className="text-xl font-semibold text-gray-500 dark:text-gray-400 animate-pulse">Loading...</div>
+          <div className="text-xl font-semibold text-text-secondary animate-pulse">Loading...</div>
         </div>
       }
     >

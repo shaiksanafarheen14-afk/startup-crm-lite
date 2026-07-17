@@ -4,11 +4,11 @@ const ActivityHeatmap = ({ data }) => {
   // data is an array of last 30 days [{date, count}]
   
   const getColor = (count) => {
-    if (count === 0) return 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700';
-    if (count <= 1) return 'bg-blue-200 dark:bg-blue-900/40 border-blue-200 dark:border-blue-800/50';
-    if (count <= 3) return 'bg-blue-400 dark:bg-blue-700 border-blue-400 dark:border-blue-600';
-    if (count <= 5) return 'bg-blue-500 dark:bg-blue-600 border-blue-500 dark:border-blue-500';
-    return 'bg-blue-600 dark:bg-blue-500 border-blue-600 dark:border-blue-400';
+    if (count === 0) return 'bg-surface  border-border ';
+    if (count <= 1) return 'bg-blue-200  border-blue-200 ';
+    if (count <= 3) return 'bg-blue-400  border-blue-400 ';
+    if (count <= 5) return 'bg-accent dark:bg-accent border-blue-500 ';
+    return 'bg-accent dark:bg-accent border-blue-600 ';
   };
 
   // Split into weeks (cols) of days (rows)
@@ -25,8 +25,8 @@ const ActivityHeatmap = ({ data }) => {
   });
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm h-full flex flex-col">
-      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Activity Heatmap (30 Days)</h3>
+    <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm h-full flex flex-col">
+      <h3 className="text-lg font-bold text-text mb-6">Activity Heatmap (30 Days)</h3>
       
       <div className="flex-1 flex flex-col justify-center overflow-x-auto pb-2">
         <div className="flex gap-1.5 justify-center min-w-max">
@@ -43,7 +43,7 @@ const ActivityHeatmap = ({ data }) => {
           ))}
         </div>
         
-        <div className="flex justify-between items-center mt-6 text-xs text-slate-500 dark:text-slate-400">
+        <div className="flex justify-between items-center mt-6 text-xs text-text-secondary">
           <span>30 days ago</span>
           <div className="flex items-center gap-1.5">
             <span>Less</span>

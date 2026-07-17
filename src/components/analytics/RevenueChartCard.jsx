@@ -16,9 +16,9 @@ const CustomTooltip = ({ active, payload, label }) => {
     }).format(payload[0].value);
     
     return (
-      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-lg">
-        <p className="font-semibold text-slate-800 dark:text-white">{label} Revenue</p>
-        <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+      <div className="bg-surface border border-border p-3 rounded-lg shadow-lg">
+        <p className="font-semibold text-text">{label} Revenue</p>
+        <p className="text-sm font-bold text-success mt-1">
           {value}
         </p>
       </div>
@@ -29,11 +29,11 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const RevenueChartCard = ({ data }) => {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm h-full flex flex-col">
-      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Revenue Analytics</h3>
+    <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm h-full flex flex-col">
+      <h3 className="text-lg font-bold text-text mb-6">Revenue Analytics</h3>
       
       {data.length === 0 || data.every(d => d.revenue === 0) ? (
-        <div className="flex-1 flex items-center justify-center text-slate-500 dark:text-slate-400 text-sm">
+        <div className="flex-1 flex items-center justify-center text-text-secondary text-sm">
           No won revenue for this period
         </div>
       ) : (

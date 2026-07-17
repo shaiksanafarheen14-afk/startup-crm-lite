@@ -9,17 +9,17 @@ const PipelineOverview = ({ leads }) => {
   const totalLeads = leads.length || 1;
 
   const segments = [
-    { id: 'New', label: 'New', count: statusCounts['New'] || 0, color: 'bg-blue-600 dark:bg-blue-500' },
-    { id: 'Contacted', label: 'Contacted', count: statusCounts['Contacted'] || 0, color: 'bg-amber-500 dark:bg-amber-400' },
-    { id: 'Qualified', label: 'Qualified', count: statusCounts['Qualified'] || 0, color: 'bg-purple-500 dark:bg-purple-400' },
-    { id: 'Closed', label: 'Closed Won', count: statusCounts['Won'] || 0, color: 'bg-green-500 dark:bg-green-400' },
+    { id: 'New', label: 'New', count: statusCounts['New'] || 0, color: 'bg-accent dark:bg-accent' },
+    { id: 'Contacted', label: 'Contacted', count: statusCounts['Contacted'] || 0, color: 'bg-amber-500 ' },
+    { id: 'Qualified', label: 'Qualified', count: statusCounts['Qualified'] || 0, color: 'bg-purple-500 ' },
+    { id: 'Closed', label: 'Closed Won', count: statusCounts['Won'] || 0, color: 'bg-green-500 ' },
   ];
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-700 transition-colors duration-200">
-      <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6">Pipeline Overview</h3>
+    <div className="bg-surface rounded-xl shadow-sm p-6 border border-border transition-colors duration-200">
+      <h3 className="text-lg font-bold text-text mb-6">Pipeline Overview</h3>
       
-      <div className="h-4 w-full flex rounded-full overflow-hidden mb-4 bg-slate-100 dark:bg-slate-700">
+      <div className="h-4 w-full flex rounded-full overflow-hidden mb-4 bg-surface">
         {segments.map(segment => {
           const percentage = (segment.count / totalLeads) * 100;
           if (percentage === 0) return null;
@@ -39,8 +39,8 @@ const PipelineOverview = ({ leads }) => {
           <div key={segment.id} className="flex items-center space-x-2">
             <span className={`w-3 h-3 rounded-full ${segment.color.split(' ')[0]} dark:${segment.color.split(' ')[1]}`}></span>
             <div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{segment.label}</p>
-              <p className="text-sm font-semibold text-slate-800 dark:text-white">{segment.count}</p>
+              <p className="text-xs text-text-secondary">{segment.label}</p>
+              <p className="text-sm font-semibold text-text">{segment.count}</p>
             </div>
           </div>
         ))}

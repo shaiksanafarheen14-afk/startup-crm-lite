@@ -44,7 +44,7 @@ const Analytics = () => {
 
   if (rawLeads.length === 0) {
     return (
-      <div className="min-h-[calc(100vh-100px)] p-4 sm:p-6 md:p-8 flex items-center justify-center bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
+      <div className="min-h-[calc(100vh-100px)] p-4 sm:p-6 md:p-8 flex items-center justify-center bg-background transition-colors duration-200">
         <EmptyAnalyticsState />
       </div>
     );
@@ -63,7 +63,7 @@ const Analytics = () => {
   const topPerformersData = getTopPerformers(leads);
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 md:p-8 bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
+    <div className="min-h-screen p-4 sm:p-6 md:p-8 bg-background transition-colors duration-200">
       <AnalyticsFilters dateRange={dateRange} setDateRange={setDateRange} />
 
       {isLoading ? (

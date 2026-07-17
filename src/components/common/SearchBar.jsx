@@ -23,7 +23,7 @@ const SearchBar = ({ value, onChange }) => {
 
   return (
     <div className="relative w-full max-w-md">
-      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
+      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-text-secondary">
         <Search size={18} />
       </div>
       
@@ -31,7 +31,7 @@ const SearchBar = ({ value, onChange }) => {
         type="text"
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
-        className="w-full pl-10 pr-10 py-2 border border-slate-300 dark:border-slate-600 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500 transition-colors text-sm text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+        className="w-full pl-10 pr-10 py-2 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-colors text-sm text-text placeholder-slate-400 dark:placeholder-slate-500"
         placeholder="Search by name, company, or email..."
         aria-label="Search leads"
       />
@@ -39,7 +39,7 @@ const SearchBar = ({ value, onChange }) => {
       {localValue && (
         <button
           onClick={handleClear}
-          className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors focus:outline-none"
+          className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-text-secondary transition-colors focus:outline-none"
           aria-label="Clear search"
         >
           <X size={16} />

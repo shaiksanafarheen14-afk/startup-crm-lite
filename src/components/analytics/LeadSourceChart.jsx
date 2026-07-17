@@ -4,10 +4,10 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-lg">
-        <p className="font-semibold text-slate-800 dark:text-white">{label}</p>
-        <p className="text-sm text-slate-600 dark:text-slate-300">
-          <span className="font-bold text-purple-600 dark:text-purple-400">{payload[0].value}</span> Leads
+      <div className="bg-surface border border-border p-3 rounded-lg shadow-lg">
+        <p className="font-semibold text-text">{label}</p>
+        <p className="text-sm text-text-secondary">
+          <span className="font-bold text-purple-600">{payload[0].value}</span> Leads
         </p>
       </div>
     );
@@ -17,11 +17,11 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const LeadSourceChart = ({ data }) => {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm h-full flex flex-col">
-      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Lead Sources</h3>
+    <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm h-full flex flex-col">
+      <h3 className="text-lg font-bold text-text mb-6">Lead Sources</h3>
       
       {data.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center text-slate-500 dark:text-slate-400 text-sm">
+        <div className="flex-1 flex items-center justify-center text-text-secondary text-sm">
           No source data available
         </div>
       ) : (
