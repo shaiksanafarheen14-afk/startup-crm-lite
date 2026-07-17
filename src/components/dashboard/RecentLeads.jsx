@@ -12,12 +12,12 @@ const RecentLeads = ({ leads }) => {
       case 'Proposal Sent': return 'bg-indigo-100  text-indigo-800 ';
       case 'Won': return 'bg-success/10  text-green-800 ';
       case 'Lost': return 'bg-red-100  text-red-800 ';
-      default: return 'bg-surface  text-text ';
+      default: return 'bg-card  text-text ';
     }
   };
 
   return (
-    <div className="bg-surface rounded-xl shadow-sm border border-border overflow-hidden transition-colors duration-200">
+    <div className="bg-card rounded-xl shadow-nordic border border-border overflow-hidden transition-colors duration-200">
       <div className="p-6 border-b border-border flex justify-between items-center transition-colors">
         <h3 className="text-lg font-bold text-text">Recent Leads</h3>
         <button className="text-sm font-medium text-accent hover:opacity-80 transition-colors">
@@ -27,7 +27,7 @@ const RecentLeads = ({ leads }) => {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-background text-text-secondary text-xs uppercase tracking-wider transition-colors">
+            <tr className="bg-surface/50 text-text font-semibold text-xs uppercase tracking-wider transition-colors">
               <th className="p-4 font-medium">Name</th>
               <th className="p-4 font-medium">Company</th>
               <th className="p-4 font-medium">Status</th>
@@ -36,7 +36,7 @@ const RecentLeads = ({ leads }) => {
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
             {recentLeads.map(lead => (
-              <tr key={lead.id} className="hover:bg-background transition-colors">
+              <tr key={lead.id} className="even:bg-black/[0.02] dark:even:bg-white/[0.02] hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors">
                 <td className="p-4 text-sm font-medium text-text">{lead.name}</td>
                 <td className="p-4 text-sm text-text-secondary">{lead.company}</td>
                 <td className="p-4 text-sm">
@@ -50,7 +50,7 @@ const RecentLeads = ({ leads }) => {
             {recentLeads.length === 0 && (
               <tr>
                 <td colSpan="4" className="p-8 text-center text-text-secondary text-sm">
-                  No leads found.
+                  No Leads Yet.
                 </td>
               </tr>
             )}

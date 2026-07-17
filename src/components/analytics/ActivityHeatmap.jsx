@@ -4,7 +4,7 @@ const ActivityHeatmap = ({ data }) => {
   // data is an array of last 30 days [{date, count}]
   
   const getColor = (count) => {
-    if (count === 0) return 'bg-surface  border-border ';
+    if (count === 0) return 'bg-card  border-border ';
     if (count <= 1) return 'bg-blue-200  border-blue-200 ';
     if (count <= 3) return 'bg-blue-400  border-blue-400 ';
     if (count <= 5) return 'bg-accent dark:bg-accent border-blue-500 ';
@@ -25,7 +25,7 @@ const ActivityHeatmap = ({ data }) => {
   });
 
   return (
-    <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm h-full flex flex-col">
+    <div className="bg-card rounded-2xl border border-border p-6 shadow-nordic h-full flex flex-col">
       <h3 className="text-lg font-bold text-text mb-6">Activity Heatmap (30 Days)</h3>
       
       <div className="flex-1 flex flex-col justify-center overflow-x-auto pb-2">

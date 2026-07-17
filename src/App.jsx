@@ -19,7 +19,7 @@ const AppContent = () => {
       <div className="flex flex-col md:flex-row min-h-screen bg-background text-text font-sans transition-colors duration-200">
         
         {/* Mobile Top Header - Visible only on < md */}
-        <header className="md:hidden flex items-center justify-between px-6 py-4 bg-surface border-b border-border sticky top-0 z-40 shadow-sm transition-colors duration-200">
+        <header className="md:hidden flex items-center justify-between px-6 py-4 bg-surface border-b border-border sticky top-0 z-40 shadow-nordic transition-colors duration-200">
           <h1 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-accent to-success dark:from-accent dark:to-success">
             Startup CRM
           </h1>

@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-surface border border-border p-3 rounded-lg shadow-lg">
+      <div className="bg-card border border-border p-3 rounded-lg shadow-lg">
         <p className="font-semibold text-text">{label}</p>
         <p className="text-sm text-text-secondary">
           Conversion: <span className="font-bold text-success">{payload[0].value}%</span>
@@ -17,7 +17,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const LineChartCard = ({ data }) => {
   return (
-    <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm h-full flex flex-col">
+    <div className="bg-card rounded-2xl border border-border p-6 shadow-nordic h-full flex flex-col">
       <h3 className="text-lg font-bold text-text mb-6">Monthly Conversion Trend</h3>
       
       {data.length === 0 ? (

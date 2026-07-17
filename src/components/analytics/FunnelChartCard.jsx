@@ -5,7 +5,7 @@ const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-surface border border-border p-3 rounded-lg shadow-lg z-50">
+      <div className="bg-card border border-border p-3 rounded-lg shadow-lg z-50">
         <p className="font-semibold text-text">{data.name}</p>
         <div className="mt-1">
           <p className="text-sm text-text-secondary"><span className="font-medium text-text">{data.value}</span> Leads</p>
@@ -22,7 +22,7 @@ const CustomTooltip = ({ active, payload }) => {
 
 const FunnelChartCard = ({ data }) => {
   return (
-    <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm h-full flex flex-col">
+    <div className="bg-card rounded-2xl border border-border p-6 shadow-nordic h-full flex flex-col">
       <h3 className="text-lg font-bold text-text mb-6">Sales Funnel</h3>
       
       {data.length === 0 || data.every(d => d.value === 0) ? (

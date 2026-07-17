@@ -13,7 +13,7 @@ const DarkModeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className={`relative inline-flex items-center h-8 rounded-full w-14 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2  ${
+      className={`relative inline-flex items-center h-8 rounded-full w-14 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2  ${
         isDarkMode ? 'bg-accent' : 'bg-slate-300'
       }`}
       role="switch"
@@ -24,7 +24,7 @@ const DarkModeToggle = () => {
       
       {/* The sliding circle */}
       <span
-        className={`inline-block w-6 h-6 transform bg-surface rounded-full transition-transform duration-300 ease-in-out shadow-sm flex items-center justify-center ${
+        className={`inline-block w-6 h-6 transform bg-card rounded-full transition-transform duration-300 ease-in-out shadow-nordic flex items-center justify-center ${
           isDarkMode ? 'translate-x-7' : 'translate-x-1'
         }`}
       >

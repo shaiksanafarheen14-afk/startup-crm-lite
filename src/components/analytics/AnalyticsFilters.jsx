@@ -15,8 +15,8 @@ const AnalyticsFilters = ({ dateRange, setDateRange }) => {
         </p>
       </div>
 
-      <div className="flex items-center gap-2 bg-surface border border-border rounded-lg p-1 shadow-sm">
-        <Calendar size={16} className="text-slate-400 ml-2" />
+      <div className="flex items-center gap-2 bg-card border border-border rounded-lg p-1 shadow-nordic">
+        <Calendar size={16} className="text-text-secondary/50 ml-2" />
         <select
           value={dateRange}
           onChange={(e) => setDateRange(e.target.value)}

@@ -23,7 +23,7 @@ const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-surface border border-border p-3 rounded-lg shadow-lg">
+      <div className="bg-card border border-border p-3 rounded-lg shadow-lg">
         <p className="font-semibold text-text">{data.name}</p>
         <p className="text-sm text-text-secondary">{data.value} Leads</p>
         <p className="text-sm text-text-secondary font-medium">{data.percentage}%</p>
@@ -45,7 +45,7 @@ const PieChartCard = ({ data, totalLeads }) => {
   };
 
   return (
-    <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm h-full flex flex-col">
+    <div className="bg-card rounded-2xl border border-border p-6 shadow-nordic h-full flex flex-col">
       <h3 className="text-lg font-bold text-text mb-6">Lead Status Distribution</h3>
       
       {data.length === 0 || totalLeads === 0 ? (
@@ -94,7 +94,7 @@ const PieChartCard = ({ data, totalLeads }) => {
                 <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: STATUS_COLORS[entry.name] || '#94A3B8' }}></span>
                 <span className="text-text-secondary truncate" title={entry.name}>{entry.name}</span>
               </div>
-              <span className="font-semibold text-text pl-2">{entry.value} <span className="text-slate-400 font-normal text-xs">({entry.percentage}%)</span></span>
+              <span className="font-semibold text-text pl-2">{entry.value} <span className="text-text-secondary/50 font-normal text-xs">({entry.percentage}%)</span></span>
             </div>
           ))}
         </div>

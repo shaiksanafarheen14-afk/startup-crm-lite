@@ -16,10 +16,10 @@ const PipelineOverview = ({ leads }) => {
   ];
 
   return (
-    <div className="bg-surface rounded-xl shadow-sm p-6 border border-border transition-colors duration-200">
+    <div className="bg-card rounded-xl shadow-nordic p-6 border border-border transition-colors duration-200">
       <h3 className="text-lg font-bold text-text mb-6">Pipeline Overview</h3>
       
-      <div className="h-4 w-full flex rounded-full overflow-hidden mb-4 bg-surface">
+      <div className="h-4 w-full flex rounded-full overflow-hidden mb-4 bg-card">
         {segments.map(segment => {
           const percentage = (segment.count / totalLeads) * 100;
           if (percentage === 0) return null;

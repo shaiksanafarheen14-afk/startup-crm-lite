@@ -4,10 +4,10 @@ import StatusBadge from './StatusBadge';
 
 const LeadTable = ({ leads, onEdit, onDelete }) => {
   return (
-    <div className="bg-surface rounded-xl shadow-sm border border-border overflow-x-auto transition-colors duration-200">
+    <div className="bg-card rounded-xl shadow-nordic border border-border overflow-x-auto transition-colors duration-200">
       <table className="w-full text-left border-collapse whitespace-nowrap">
         <thead>
-          <tr className="bg-background text-text-secondary text-xs uppercase tracking-wider border-b border-border transition-colors">
+          <tr className="bg-surface/50 text-text font-semibold text-xs uppercase tracking-wider border-b border-border transition-colors">
             <th className="px-6 py-4 font-medium">Name</th>
             <th className="px-6 py-4 font-medium">Company</th>
             <th className="px-6 py-4 font-medium">Status</th>
@@ -19,7 +19,7 @@ const LeadTable = ({ leads, onEdit, onDelete }) => {
         </thead>
         <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
           {leads.map((lead) => (
-            <tr key={lead.id} className="hover:bg-background transition-colors">
+            <tr key={lead.id} className="even:bg-black/[0.02] dark:even:bg-white/[0.02] hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors">
               <td className="px-6 py-4 text-sm font-medium text-text">{lead.name}</td>
               <td className="px-6 py-4 text-sm text-text-secondary">{lead.company}</td>
               <td className="px-6 py-4 text-sm">
@@ -52,7 +52,7 @@ const LeadTable = ({ leads, onEdit, onDelete }) => {
           {leads.length === 0 && (
             <tr>
               <td colSpan="7" className="px-6 py-8 text-center text-text-secondary text-sm">
-                No leads found. Click "Add New Lead" to get started.
+                No Leads Yet. Click "Add New Lead" to get started.
               </td>
             </tr>
           )}

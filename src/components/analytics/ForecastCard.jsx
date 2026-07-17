@@ -11,7 +11,7 @@ const formatCurrency = (amount) => {
 
 const ForecastCard = ({ forecast, confidence = 85 }) => {
   return (
-    <div className="bg-surface rounded-2xl p-6 border border-border shadow-sm h-full flex flex-col justify-between">
+    <div className="bg-card rounded-2xl p-6 border border-border shadow-nordic h-full flex flex-col justify-between">
       <div>
         <div className="flex items-center gap-2 mb-2">
           <Sparkles size={20} className="text-accent" />
@@ -35,7 +35,7 @@ const ForecastCard = ({ forecast, confidence = 85 }) => {
           <span className="text-text-secondary font-medium">Confidence Score</span>
           <span className="text-text font-bold">{confidence}%</span>
         </div>
-        <div className="w-full bg-surface rounded-full h-2.5 overflow-hidden">
+        <div className="w-full bg-card rounded-full h-2.5 overflow-hidden">
           <div 
             className="bg-accent h-2.5 rounded-full transition-all duration-1000 ease-out" 
             style={{ width: `${confidence}%` }}

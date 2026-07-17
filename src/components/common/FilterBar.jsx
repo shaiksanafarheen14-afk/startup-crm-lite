@@ -18,15 +18,15 @@ const FilterBar = ({ activeFilter, onFilterChange, leads }) => {
           <button
             key={filter}
             onClick={() => onFilterChange(filter)}
-            className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+            className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 duration-200 ${
               isActive
-                ? 'bg-accent text-white shadow-sm'
-                : 'bg-surface  text-text-secondary  border border-border  hover:bg-background '
-            }`}
+                ? 'bg-primary text-background shadow-nordic'
+                : 'bg-card  text-text-secondary  border border-border  hover:bg-background '
+            } hover:opacity-90 active:scale-[0.98]`}
             aria-pressed={isActive}
             aria-label={`Filter by ${filter}, ${count} leads`}
           >
-            {filter} <span className={`ml-1 ${isActive ? 'text-blue-200' : 'text-slate-400 dark:text-text-secondary'}`}>({count})</span>
+            {filter} <span className={`ml-1 ${isActive ? 'text-blue-200' : 'text-text-secondary/50 dark:text-text-secondary'}`}>({count})</span>
           </button>
         );
       })}

@@ -11,11 +11,11 @@ const StatsCard = ({ title, value, icon: Icon, change, color }) => {
   const isPositiveChange = change >= 0;
 
   return (
-    <div className="bg-surface rounded-xl shadow-sm p-6 border border-border hover:shadow-md transition-all duration-200">
+    <div className="bg-card rounded-xl shadow-nordic p-6 border border-border hover:shadow-md transition-all duration-200">
       <div className="flex justify-between items-start">
         <div>
-          <p className="text-sm font-medium text-text-secondary mb-1">{title}</p>
-          <h3 className="text-2xl font-bold text-text">{value}</h3>
+          <p className="text-sm font-medium text-text-secondary mb-2">{title}</p>
+          <h3 className="text-3xl font-bold tracking-tight text-text">{value}</h3>
         </div>
         <div className={`p-3 rounded-lg ${colorMap[color] || colorMap.primary}`}>
           <Icon size={24} />

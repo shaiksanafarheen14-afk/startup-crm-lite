@@ -42,7 +42,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8 w-full absolute inset-0 z-50">
-      <div className="max-w-md w-full space-y-8 bg-surface p-8 rounded-xl shadow-lg border border-border">
+      <div className="max-w-md w-full space-y-8 bg-card p-8 rounded-xl shadow-lg border border-border">
         <div>
           <div className="mx-auto h-12 w-12 bg-success/10 rounded-xl flex items-center justify-center">
              <UserPlus className="h-6 w-6 text-success" />
@@ -52,9 +52,9 @@ const Register = () => {
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md shadow-nordic -space-y-px">
             <div className="mb-4">
-              <label className="block text-sm font-medium text-text-secondary mb-1">Full Name</label>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Full Name</label>
               <input
                 type="text"
                 required
@@ -65,7 +65,7 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-text-secondary mb-1">Email address</label>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Email address</label>
               <input
                 type="email"
                 required
@@ -76,7 +76,7 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-text-secondary mb-1">Password</label>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Password</label>
               <input
                 type="password"
                 required
@@ -87,7 +87,7 @@ const Register = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">Confirm Password</label>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Confirm Password</label>
               <input
                 type="password"
                 required

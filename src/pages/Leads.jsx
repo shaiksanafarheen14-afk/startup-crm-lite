@@ -78,17 +78,17 @@ const Leads = () => {
 
         <div className="flex flex-row items-center justify-between md:justify-end space-x-3 w-full md:w-auto">
           {/* View Toggle Buttons - Hidden on Mobile since we force grid view */}
-          <div className="hidden md:flex bg-surface border border-border rounded-lg p-1 shadow-sm transition-colors duration-200">
+          <div className="hidden md:flex bg-card border border-border rounded-lg p-1 shadow-nordic transition-colors duration-200">
             <button
               onClick={() => setViewMode('table')}
-              className={`p-1.5 rounded-md min-h-[44px] min-w-[44px] transition-colors flex items-center justify-center ${viewMode === 'table' ? 'bg-surface  text-accent ' : 'text-text-secondary  hover:text-text-secondary '}`}
+              className={`p-1.5 rounded-md min-h-[44px] min-w-[44px] transition-colors flex items-center justify-center ${viewMode === 'table' ? 'bg-card  text-accent ' : 'text-text-secondary  hover:text-text-secondary '}`}
               aria-label="Table View"
             >
               <ListIcon size={18} />
             </button>
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-md min-h-[44px] min-w-[44px] transition-colors flex items-center justify-center ${viewMode === 'grid' ? 'bg-surface  text-accent ' : 'text-text-secondary  hover:text-text-secondary '}`}
+              className={`p-1.5 rounded-md min-h-[44px] min-w-[44px] transition-colors flex items-center justify-center ${viewMode === 'grid' ? 'bg-card  text-accent ' : 'text-text-secondary  hover:text-text-secondary '}`}
               aria-label="Grid View"
             >
               <LayoutGrid size={18} />
@@ -97,7 +97,7 @@ const Leads = () => {
 
           <button
             onClick={handleAddClick}
-            className="flex flex-1 md:flex-none items-center justify-center px-4 py-2.5 min-h-[44px] bg-accent text-white font-medium rounded-lg hover:opacity-90 dark:bg-accent dark:hover:bg-accent transition-colors shadow-sm"
+            className="flex flex-1 md:flex-none items-center justify-center px-4 py-2.5 min-h-[44px] bg-primary text-background font-medium rounded-lg hover:opacity-90 dark:bg-accent dark:hover:bg-accent transition-all duration-200 shadow-nordic active:scale-[0.98]"
           >
             <Plus size={18} className="mr-2" />
             Add New Lead
@@ -140,15 +140,15 @@ const Leads = () => {
             Mobile: Takes up entire viewport, slides up from bottom (items-end above, w-full h-full here)
             Tablet+: Max-width, rounded corners, auto height
           */}
-          <div className="bg-surface w-full h-full md:h-auto md:max-w-lg md:max-h-[90vh] md:rounded-xl shadow-2xl overflow-y-auto animate-in slide-in-from-bottom-full md:fade-in md:zoom-in-95 duration-200 border-0 md:border md:border-border transition-colors">
+          <div className="bg-card w-full h-full md:h-auto md:max-w-lg md:max-h-[90vh] md:rounded-xl shadow-2xl overflow-y-auto animate-in slide-in-from-bottom-full md:fade-in md:zoom-in-95 duration-200 border-0 md:border md:border-border transition-colors">
             
-            <div className="flex items-center justify-between p-4 md:p-6 border-b border-border sticky top-0 bg-surface z-10 transition-colors">
+            <div className="flex items-center justify-between p-4 md:p-6 border-b border-border sticky top-0 bg-card z-10 transition-colors">
               <h2 className="text-lg md:text-xl font-bold text-text">
                 {selectedLead ? 'Edit Lead' : 'Add New Lead'}
               </h2>
               <button
                 onClick={closeModal}
-                className="text-slate-400 dark:text-text-secondary hover:text-text-secondary transition-colors p-2 min-h-[44px] min-w-[44px] rounded-full hover:bg-surface flex items-center justify-center"
+                className="text-text-secondary hover:bg-black/[0.04] dark:hover:bg-white/[0.04] hover:text-text transition-colors p-2 min-h-[44px] min-w-[44px] rounded-full hover:bg-card flex items-center justify-center"
                 aria-label="Close modal"
               >
                 <X size={20} />

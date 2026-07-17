@@ -19,13 +19,9 @@ const Sidebar = () => {
         - Tablet (md): Collapsed Left Sidebar (Icons + tiny text)
         - Desktop (lg): Full Left Sidebar (Icons + full text)
       */}
-      <div className="
- fixed bottom-0 left-0 right-0 z-50 flex flex-row items-center justify-around h-16 px-4
- bg-surface text-text shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-colors duration-200 border-t border-border 
- 
- md:static md:flex-col md:h-screen md:w-24 md:p-4 md:border-t-0 md:border-r md:shadow-xl md:justify-start
- lg:w-64 lg:p-6
-">
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-row items-center justify-around h-16 px-4
+ bg-surface/90 text-text shadow-nordic transition-colors duration-200 border-t border-border md:static md:flex-col md:h-screen md:w-24 md:p-4 md:border-t-0 md:border-r md:shadow-xl md:justify-start
+ lg:w-64 lg:p-6">
 
         {/* Branding - Hidden on mobile (moved to Top Header), shown on md+ */}
         <div className="hidden md:flex flex-col items-center lg:items-start w-full mb-8 lg:mb-10">
@@ -43,7 +39,7 @@ const Sidebar = () => {
               key={item.path}
               className={({ isActive }) =>
                 `flex flex-col lg:flex-row items-center justify-center lg:justify-start px-2 py-2 md:py-3 lg:px-4 rounded-xl font-medium transition-all duration-200 min-h-[44px] min-w-[44px] ${isActive
-                  ? 'bg-accent text-white shadow-md'
+                  ? 'bg-primary text-background shadow-md'
                   : 'text-text-secondary  hover:bg-surface  hover:text-text '
                 }`
               }

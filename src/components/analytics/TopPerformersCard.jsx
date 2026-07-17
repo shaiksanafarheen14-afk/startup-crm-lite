@@ -11,7 +11,7 @@ const formatCurrency = (amount) => {
 
 const TopPerformersCard = ({ data }) => {
   return (
-    <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm h-full flex flex-col">
+    <div className="bg-card rounded-2xl border border-border p-6 shadow-nordic h-full flex flex-col">
       <h3 className="text-lg font-bold text-text mb-6">Top Performers</h3>
       
       {data.length === 0 ? (

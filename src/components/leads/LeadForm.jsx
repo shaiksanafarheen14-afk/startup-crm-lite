@@ -47,12 +47,12 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
     }
   };
 
-  const inputBaseClasses = "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none transition-shadow bg-surface  text-text ";
+  const inputBaseClasses = "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none transition-shadow bg-card  text-text ";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-1">
+        <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-2">
           Name <span className="text-error">*</span>
         </label>
         <input
@@ -64,7 +64,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           className={`${inputBaseClasses} ${
             errors.name 
               ? 'border-red-500 focus:ring-red-200 ' 
-              : 'border-border  focus:ring-blue-200  focus:border-blue-500 '
+              : 'border-border  focus:ring-primary focus:border-primary '
           }`}
           placeholder="e.g. Jane Doe"
         />
@@ -72,7 +72,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
       </div>
 
       <div>
-        <label htmlFor="company" className="block text-sm font-medium text-text-secondary mb-1">
+        <label htmlFor="company" className="block text-sm font-medium text-text-secondary mb-2">
           Company <span className="text-error">*</span>
         </label>
         <input
@@ -84,7 +84,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           className={`${inputBaseClasses} ${
             errors.company 
               ? 'border-red-500 focus:ring-red-200 ' 
-              : 'border-border  focus:ring-blue-200  focus:border-blue-500 '
+              : 'border-border  focus:ring-primary focus:border-primary '
           }`}
           placeholder="e.g. Acme Corp"
         />
@@ -92,7 +92,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-1">
+        <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
           Email <span className="text-error">*</span>
         </label>
         <input
@@ -104,7 +104,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           className={`${inputBaseClasses} ${
             errors.email 
               ? 'border-red-500 focus:ring-red-200 ' 
-              : 'border-border  focus:ring-blue-200  focus:border-blue-500 '
+              : 'border-border  focus:ring-primary focus:border-primary '
           }`}
           placeholder="jane@acme.com"
         />
@@ -112,7 +112,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
       </div>
 
       <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-text-secondary mb-1">
+        <label htmlFor="phone" className="block text-sm font-medium text-text-secondary mb-2">
           Phone
         </label>
         <input
@@ -121,14 +121,14 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           name="phone"
           value={formData.phone}
           onChange={handleChange}
-          className={`${inputBaseClasses} border-border  focus:ring-blue-200  focus:border-blue-500`}
+          className={`${inputBaseClasses} border-border  focus:ring-primary focus:border-primary`}
           placeholder="+1 (555) 000-0000"
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="status" className="block text-sm font-medium text-text-secondary mb-1">
+          <label htmlFor="status" className="block text-sm font-medium text-text-secondary mb-2">
             Status
           </label>
           <select
@@ -136,7 +136,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className={`${inputBaseClasses} border-border  focus:ring-blue-200  focus:border-blue-500`}
+            className={`${inputBaseClasses} border-border  focus:ring-primary focus:border-primary`}
           >
             {STATUS_OPTIONS.map((status) => (
               <option key={status} value={status}>
@@ -147,7 +147,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
         </div>
 
         <div>
-          <label htmlFor="source" className="block text-sm font-medium text-text-secondary mb-1">
+          <label htmlFor="source" className="block text-sm font-medium text-text-secondary mb-2">
             Source
           </label>
           <select
@@ -155,7 +155,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
             name="source"
             value={formData.source}
             onChange={handleChange}
-            className={`${inputBaseClasses} border-border  focus:ring-blue-200  focus:border-blue-500`}
+            className={`${inputBaseClasses} border-border  focus:ring-primary focus:border-primary`}
           >
             {SOURCE_OPTIONS.map((source) => (
               <option key={source} value={source}>
@@ -170,13 +170,13 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
         <button
           type="button"
           onClick={onCancel}
-          className="px-5 py-2.5 text-sm font-medium text-text-secondary bg-surface border border-border rounded-lg hover:bg-background focus:outline-none focus:ring-2 focus:ring-slate-200 transition-colors"
+          className="px-5 py-2.5 text-sm font-medium text-primary bg-card border border-primary rounded-lg hover:bg-surface focus:outline-none focus:ring-2 focus:ring-slate-200 transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-5 py-2.5 text-sm font-medium text-white bg-accent border border-transparent rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-colors shadow-sm"
+          className="px-5 py-2.5 text-sm font-medium text-background bg-primary border border-transparent rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors shadow-nordic"
         >
           {initialData ? 'Update Lead' : 'Create Lead'}
         </button>

@@ -95,18 +95,18 @@ const StatsCards = ({ leads, previousLeads }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
       {stats.map((stat, index) => (
-        <div key={index} className="bg-surface rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-all flex items-center">
+        <div key={index} className="bg-card rounded-2xl p-6 border border-border shadow-nordic hover:shadow-md transition-all flex items-center">
           <div className={`p-4 rounded-xl mr-5 ${stat.bgClass} ${stat.colorClass}`}>
             <stat.icon size={26} strokeWidth={2.5} />
           </div>
           <div>
-            <p className="text-sm font-medium text-text-secondary mb-1">{stat.title}</p>
-            <h3 className="text-2xl font-bold text-text flex items-center gap-2">
+            <p className="text-sm font-medium text-text-secondary mb-2">{stat.title}</p>
+            <h3 className="text-3xl font-bold tracking-tight text-text flex items-center gap-2">
               {stat.value}
             </h3>
             {stat.trend !== undefined && (
               <p className={`text-xs mt-1 font-medium ${stat.trend >= 0 ? 'text-success ' : 'text-error dark:text-error'}`}>
-                {stat.trend > 0 ? '+' : ''}{stat.trend}% <span className="text-slate-400 dark:text-text-secondary font-normal">{stat.trendLabel}</span>
+                {stat.trend > 0 ? '+' : ''}{stat.trend}% <span className="text-text-secondary/50 dark:text-text-secondary font-normal">{stat.trendLabel}</span>
               </p>
             )}
           </div>
