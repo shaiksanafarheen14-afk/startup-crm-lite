@@ -30,7 +30,9 @@ const app = express();
 // ==========================================
 
 // Set security HTTP headers
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
 // Log incoming requests
 if (process.env.NODE_ENV === 'production') {
@@ -69,16 +71,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(mongoSanitize());
 
 // Rate Limiting
+app.set('trust proxy', 1);
+
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  message: 'Too many requests, please try again later.'
+  message: { success: false, message: 'Too many requests, please try again later.' }
 });
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
-  message: 'Too many auth attempts.'
+  message: { success: false, message: 'Too many auth attempts.' }
 });
 
 app.use('/api/', generalLimiter);
